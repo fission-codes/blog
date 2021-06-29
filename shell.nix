@@ -4,4 +4,8 @@ let
 in pkgs.mkShell {
   name = "blog";
   buildInputs = with pkgs; [ nodejs yarn ];
+
+  shellHook = ''
+    ${pkgs.yarn}/bin/yarn install
+  '';
 }
