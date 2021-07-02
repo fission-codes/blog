@@ -5,7 +5,7 @@ A React-based blogging engine powered by [Fission's Webnative SDK](https://githu
 
 ## Development
 
-Dependencies (via Nix) either by using [lorri](https://github.com/nix-community/lorri) or running:
+Dependencies (via Nix) either by using [nix-direnv](https://github.com/nix-community/nix-direnv) or running:
 
 ```
 nix-shell
