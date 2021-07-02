@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@fission-suite/kit": "^1.0.1",
     "autoprefixer": "^9",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"

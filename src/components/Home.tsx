@@ -8,7 +8,9 @@ const Home = () => {
     <main>
       <h1>Fission Blog</h1>
 
-      <button onClick={() => logout()}>Logout</button>
+      <button className="btn" onClick={() => logout()}>
+        Logout
+      </button>
     </main>
   );
 };

@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+  @apply antialiased appearance-none font-semibold inline-block leading-normal px-5 py-3 relative rounded text-white tracking-wider transition-colors uppercase duration-500 ease-out bg-purple mt-8 mx-auto text-sm;
+}
+
+.btn:hover {
+  @apply bg-base-600 text-white;
+}
