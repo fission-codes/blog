@@ -4,10 +4,21 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { WebnativeProvider } from "./context/webnative";
+import * as wn from "webnative";
+
+const PERMISSIONS = {
+  app: {
+    name: "Blog",
+    creator: "Fission",
+  },
+  fs: {
+    public: [wn.path.directory("Apps", "Fission", "Blog")],
+  },
+};
 
 ReactDOM.render(
   <React.StrictMode>
-    <WebnativeProvider>
+    <WebnativeProvider permissions={PERMISSIONS}>
       <App />
     </WebnativeProvider>
   </React.StrictMode>,

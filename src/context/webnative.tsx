@@ -1,20 +1,28 @@
 import * as React from "react";
 import * as wn from "webnative";
-
+import { Permissions } from "webnative/dist/ucan/permissions";
 wn.setup.debug({ enabled: true });
 
-interface WebnativeContextInterface {
+interface WebnativeContext {
   state: wn.State | undefined;
   error: Error | undefined;
   login: Function;
   logout: Function;
 }
 
-const WebnativeContext = React.createContext<WebnativeContextInterface | null>(
-  null
-);
+const WebnativeCtx = React.createContext<WebnativeContext | null>(null);
 
-const WebnativeProvider: React.FC = (props) => {
+interface Props {
+  permissions?: Permissions;
+  loading?: React.ReactElement;
+  children: React.ReactNode;
+}
+
+const WebnativeProvider: React.FC<Props> = ({
+  permissions,
+  loading,
+  children,
+}) => {
   const [state, setState] = React.useState<wn.State>();
   const [error, setError] = React.useState();
 
@@ -22,15 +30,7 @@ const WebnativeProvider: React.FC = (props) => {
     async function getState() {
       const result = await wn
         .initialise({
-          permissions: {
-            app: {
-              name: "Blog",
-              creator: "Fission",
-            },
-            fs: {
-              public: [wn.path.directory("Apps", "Fission", "Blog")],
-            },
-          },
+          permissions,
         })
         .catch((err) => {
           setError(err);
@@ -40,10 +40,10 @@ const WebnativeProvider: React.FC = (props) => {
       setState(result);
     }
     getState();
-  }, []);
+  }, [permissions]);
 
   if (!state) {
-    return <h1>Loading...</h1>;
+    return loading || <div>Loading...</div>;
   }
 
   const login = () => {
@@ -55,14 +55,12 @@ const WebnativeProvider: React.FC = (props) => {
   };
 
   return (
-    <WebnativeContext.Provider
-      value={{ state, error, login, logout }}
-      {...props}
-    />
+    <WebnativeCtx.Provider value={{ state, error, login, logout }}>
+      {children}
+    </WebnativeCtx.Provider>
   );
 };
 
-const useWebnative = () =>
-  React.useContext(WebnativeContext) as WebnativeContextInterface;
+const useWebnative = () => React.useContext(WebnativeCtx) as WebnativeContext;
 
 export { WebnativeProvider, useWebnative };
