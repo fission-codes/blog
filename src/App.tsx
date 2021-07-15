@@ -1,12 +1,18 @@
 import React from "react";
-import { useWebnative } from "./context/webnative";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import AuthRoute from "./components/AuthRoute";
 import Home from "./components/Home";
 import Login from "./components/Login";
 
 function App() {
-  const { state } = useWebnative();
-
-  return state?.authenticated ? <Home /> : <Login />;
+  return (
+    <Router>
+      <Switch>
+        <AuthRoute path="/" component={Home} exact />
+        <Route path="/login" component={Login} />
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;

@@ -1,9 +1,13 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { useWebnative } from "../context/webnative";
 
 const Login = () => {
-  const { login } = useWebnative();
+  const { state, login } = useWebnative();
 
+  if (state?.authenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <div className="px-6 flex flex-auto flex-col items-center justify-center py-12 text-center">
