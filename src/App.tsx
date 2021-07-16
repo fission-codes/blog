@@ -1,14 +1,20 @@
 import React from "react";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import AuthRoute from "./components/AuthRoute";
-import Home from "./components/Home";
-import Login from "./components/Login";
+import Login from "./pages/Login";
+import Posts from "./pages/Posts";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <AuthRoute path="/" component={Home} exact />
+        <Redirect from="/" to="/posts" exact />
+        <AuthRoute path="/posts" component={Posts} exact />
         <Route path="/login" component={Login} />
       </Switch>
     </Router>
