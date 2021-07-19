@@ -1,10 +1,13 @@
 import * as React from "react";
 import * as wn from "webnative";
+import FileSystem from "webnative/dist/fs";
 import { Permissions } from "webnative/dist/ucan/permissions";
 wn.setup.debug({ enabled: true });
 
 interface WebnativeContext {
   state: wn.State | undefined;
+  fs: FileSystem | undefined;
+  username: string | undefined;
   error: Error | undefined;
   login: Function;
   logout: Function;
@@ -25,6 +28,7 @@ const WebnativeProvider: React.FC<Props> = ({
 }) => {
   const [state, setState] = React.useState<wn.State>();
   const [error, setError] = React.useState();
+  let fs, username;
 
   React.useEffect(() => {
     async function getState() {
@@ -54,8 +58,23 @@ const WebnativeProvider: React.FC<Props> = ({
     wn.leave();
   };
 
+  switch (state.scenario) {
+    case wn.Scenario.AuthCancelled:
+      // User was redirected to lobby,
+      // but cancelled the authorisation
+      break;
+
+    case wn.Scenario.AuthSucceeded:
+    case wn.Scenario.Continuation:
+      fs = state.fs;
+      username = state.username;
+      break;
+  }
+
   return (
-    <WebnativeCtx.Provider value={{ state, error, login, logout }}>
+    <WebnativeCtx.Provider
+      value={{ state, fs, username, error, login, logout }}
+    >
       {children}
     </WebnativeCtx.Provider>
   );
