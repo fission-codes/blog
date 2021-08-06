@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useWebnative } from "../context/webnative";
 import * as wn from "webnative";
-import { FilePath } from "webnative/dist/path";
+import { FilePath } from "webnative/path";
 import { Feed } from "../utils/feed";
 
 const Posts = () => {
