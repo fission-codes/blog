@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as wn from "webnative";
-import FileSystem from "webnative/dist/fs";
-import { Permissions } from "webnative/dist/ucan/permissions";
+import FileSystem from "webnative/fs/filesystem";
+import { Permissions } from "webnative/ucan/permissions";
 wn.setup.debug({ enabled: true });
 
 interface WebnativeContext {
