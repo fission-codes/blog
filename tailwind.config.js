@@ -4,7 +4,7 @@ const kit = require("@fission-suite/kit");
 module.exports = {
   purge: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html",
+    "./index.html",
     ...kit.tailwindPurgeList(),
   ],
   darkMode: false, // or 'media' or 'class'
