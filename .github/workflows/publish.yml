@@ -1,0 +1,53 @@
+name: 🚀 Publish
+on:
+  push:
+    branches:
+      - main
+      - develop
+jobs:
+  build:
+    name: 🏗 Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: 🔑 Get cache directory
+        id: yarn-cache-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: 💾 Cache modules
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: 📦 Install packages
+        run: yarn install
+      - name: 🏗 Build assets
+        run: yarn build
+  publish_prod:
+    name: 🚀 Publish prod
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Publish to Fission!
+        uses: fission-suite/publish-action@v1
+        with:
+          app_url: blog.fission.app
+          build_dir: ./dist
+          machine_key: ${{ secrets.MACHINE_KEY }}
+  publish_dev:
+    name: 🚀 Publish dev
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Publish to Fission!
+        uses: fission-suite/publish-action@v1
+        with:
+          app_url: blog-dev.fission.app
+          build_dir: ./dist
+          machine_key: ${{ secrets.MACHINE_KEY }}
