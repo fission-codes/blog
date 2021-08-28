@@ -4,15 +4,14 @@ on:
     branches:
       - main
       - develop
-  pull_request:
 jobs:
-  build:
-    name: 🏗 Build
+  publish:
+    name: 🚀 Publish
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v2
-      - name: Setup node
+      - name: 🧱 Setup node
         uses: actions/setup-node@v2
         with:
           node-version: "16"
@@ -21,25 +20,15 @@ jobs:
         run: yarn install
       - name: 🏗 Build assets
         run: yarn build
-  publish_prod:
-    name: 🚀 Publish prod
-    if: github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Publish to Fission!
+      - name: 🚀 Publish to production
+        if: github.ref == 'refs/heads/main'
         uses: fission-suite/publish-action@v1
         with:
-          app_url: blog.fission.app
+          app_url: blog-prod.fission.app
           build_dir: ./dist
           machine_key: ${{ secrets.MACHINE_KEY }}
-  publish_dev:
-    name: 🚀 Publish dev
-    if: github.ref == 'refs/heads/develop'
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Publish to Fission!
+      - name: 🚀 Publish to staging
+        if: github.ref == 'refs/heads/develop'
         uses: fission-suite/publish-action@v1
         with:
           app_url: blog-dev.fission.app
