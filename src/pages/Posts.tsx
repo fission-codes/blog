@@ -35,7 +35,7 @@ const Posts = () => {
     <Layout>
       <header className="flex">
         <h1 className="text-xl flex-grow">Posts</h1>
-        <Link to="" className="justify-end">
+        <Link to="/posts/new" className="justify-end">
           + New
         </Link>
       </header>

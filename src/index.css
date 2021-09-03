@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 .btn {
-  @apply antialiased appearance-none font-semibold inline-block leading-normal px-5 py-3 relative rounded text-white tracking-wider transition-colors uppercase duration-500 ease-out bg-purple mt-8 mx-auto text-sm;
+  @apply antialiased appearance-none font-semibold inline-block leading-normal px-5 py-3 relative rounded text-white tracking-wider transition-colors uppercase duration-500 ease-out bg-purple mt-8 my-auto text-sm;
 }
 
 .btn:hover {
   @apply bg-base-600 text-white;
+}
+
+.form-input,
+.form-textarea {
+  @apply block mt-1 px-3 py-2 rounded w-full h-auto;
 }
