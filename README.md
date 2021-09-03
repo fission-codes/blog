@@ -14,5 +14,5 @@ nix-shell
 Development server:
 
 ```
-yarn start
+npm start
 ```

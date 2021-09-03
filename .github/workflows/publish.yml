@@ -15,11 +15,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-          cache: "yarn"
+          cache: "npm"
       - name: 📦 Install packages
-        run: yarn install
+        run: npm install
       - name: 🏗 Build assets
-        run: yarn build
+        run: npm run build
       - name: 🚀 Publish to production
         if: github.ref == 'refs/heads/main'
         uses: fission-suite/publish-action@v1
