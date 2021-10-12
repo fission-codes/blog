@@ -5,6 +5,8 @@
  */
 interface Item {
   id: string;
+  authors: Author[];
+  tags: string[];
   url?: string;
   external_url?: string;
   title?: string;
@@ -15,8 +17,6 @@ interface Item {
   banner_image?: string;
   date_published?: string;
   date_modified?: string;
-  authors: Author[];
-  tags: string[];
   language?: string;
 }
 
@@ -41,8 +41,9 @@ export class Feed {
   expired?: boolean;
   items: Item[] = [];
 
-  constructor(title: string) {
+  constructor(title: string, items: Item[]) {
     this.title = title;
+    this.items = items;
   }
 
   public addItem = (item: Item) => {
@@ -54,7 +55,11 @@ export class Feed {
   };
 
   static fromString = (str: string): Feed => {
+    if (!str) {
+      // TODO -- should use a real title
+      return new Feed('test', [])
+    }
     const feed = JSON.parse(str);
-    return new Feed(feed);
+    return new Feed(feed.title, feed.items);
   };
 }

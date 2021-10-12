@@ -1,35 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useWebnative } from "../context/webnative";
-import * as wn from "webnative";
-import { FilePath } from "webnative/path";
-import { Feed } from "../utils/feed";
 
-const Posts = () => {
-  const { fs, username } = useWebnative();
-  const [feed, setFeed] = useState<Feed | null>();
-
-  // Load or initialize feed
-  useEffect(() => {
-    async function loadFeed() {
-      if (!username || !fs || !fs.appPath) return;
-
-      const feedPath = fs.appPath(wn.path.file("feed.json"));
-      if (await fs.exists(feedPath)) {
-        console.log("✅ feed file exists");
-        const content = await fs.read(feedPath as FilePath);
-        setFeed(Feed.fromString(content as string));
-      } else {
-        console.log("❌ need to create feed");
-        const newFeed = new Feed(`${username}'s blog`);
-        await fs.write(feedPath as FilePath, newFeed.toString());
-        await fs.publish();
-      }
-    }
-
-    loadFeed();
-  }, [fs, username]);
+const Posts = ({ feed }) => {
+  console.log('feeeeeeeeeeeeeeed', feed)
 
   return (
     <Layout>
@@ -48,8 +22,8 @@ const Posts = () => {
               Last Update
             </div>
           </li>
-          {feed?.items.map((item) => (
-            <li className="table-row bg-white">
+          {feed?.items.map((item, i) => (
+            <li key={i} className="table-row bg-white">
               <div className="table-cell py-2 px-4">{item.title}</div>
               <div className="table-cell py-2 px-4">Draft</div>
               <div className="table-cell py-2 px-4">{item.date_published}</div>
