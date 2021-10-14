@@ -30,11 +30,13 @@ function App() {
           setFeed(Feed.fromString(content as string));
         } catch (err) {
           console.log('err in here', err)
-          await createFeed(feedPath)
+          var _feed = await createFeed(feedPath)
+          setFeed(_feed)
         }
       } else {
         console.log("❌ need to create feed");
-        await createFeed(feedPath)
+        var _feed = await createFeed(feedPath)
+        setFeed(_feed);
       }
     }
 
@@ -46,6 +48,7 @@ function App() {
     const newFeed = new Feed(`${username}'s blog`, []);
     await fs.write(feedPath as FilePath, newFeed.toString());
     await fs.publish();
+    return newFeed
   }
 
   return (
