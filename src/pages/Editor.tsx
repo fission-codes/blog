@@ -1,9 +1,10 @@
-import React from "react";
+import React, { FunctionComponent } from 'react';
 import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { useWebnative } from "../context/webnative";
 import * as wn from "webnative";
 import { FilePath } from "webnative/path";
+import { Feed } from "../utils/feed";
 
 type Inputs = {
   title: string;
@@ -11,7 +12,11 @@ type Inputs = {
   image: string;
 };
 
-const Editor = ({ feed }) => {
+type EditorProps = {
+  feed: Feed
+}
+
+const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
   const {
     register,
     handleSubmit,
@@ -32,11 +37,8 @@ const Editor = ({ feed }) => {
       //   add `id: <hash>`
       id: '1',
       // TODO -- get a real name
-      authors: [{ name: 'alice' }],
       content_text: data.content,
-      title: data.title,
-      // TODO -- tags
-      tags: ['b']
+      title: data.title
     })
 
     const feedPath = fs.appPath(wn.path.file("feed.json"));

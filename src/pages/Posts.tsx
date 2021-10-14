@@ -1,10 +1,13 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import { Feed } from "../utils/feed";
+import React, { FunctionComponent } from 'react';
 
-const Posts = ({ feed }) => {
-  console.log('feeeeeeeeeeeeeeed', feed)
+type PostProps = {
+  feed: Feed
+}
 
+const Posts: FunctionComponent<PostProps> = ({ feed }) => {
   return (
     <Layout>
       <header className="flex">

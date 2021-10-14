@@ -16,7 +16,7 @@ import { useWebnative } from "./context/webnative";
 
 function App() {
   const { fs, username } = useWebnative();
-  const [feed, setFeed] = useState<Feed | null>();
+  const [feed, setFeed] = useState<Feed | null>(null);
 
   useEffect(() => {
     async function loadFeed() {
@@ -44,8 +44,8 @@ function App() {
     loadFeed();
   }, [fs, username]);
 
-  function createFeed (feedPath) {
-    if (!fs) return
+  function createFeed (feedPath:FilePath) {
+    if (!fs) return null
     const newFeed = new Feed(`${username}'s blog`, []);
     return fs.write(feedPath as FilePath, newFeed.toString())
       .then(() => {
