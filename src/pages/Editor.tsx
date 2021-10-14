@@ -32,10 +32,14 @@ const Editor = ({ feed }) => {
 
     feed.addItem({
       // TODO -- how to get id?
+      // could take the hash of the post (without id attribute), then
+      //   add `id: <hash>`
       id: '1',
+      // TODO -- get a real name
       authors: [{ name: 'alice' }],
       content_text: data.content,
       title: data.title,
+      // TODO -- tags
       tags: ['b']
     })
 
