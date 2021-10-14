@@ -55,11 +55,6 @@ export class Feed {
   };
 
   static fromString = (str: string): Feed => {
-    if (!str) {
-      // TODO -- should use a real title
-      return new Feed('test', [])
-    }
-
     var feed
     try {
       feed = JSON.parse(str);

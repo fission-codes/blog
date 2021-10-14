@@ -29,6 +29,7 @@ function App() {
         try {
           setFeed(Feed.fromString(content as string));
         } catch (err) {
+          // this error means that the given content was not valid JSON
           console.log('err in here', err)
           const _feed = await createFeed(feedPath)
           setFeed(_feed)
@@ -43,12 +44,14 @@ function App() {
     loadFeed();
   }, [fs, username]);
 
-  async function createFeed (feedPath) {
+  function createFeed (feedPath) {
     if (!fs) return
     const newFeed = new Feed(`${username}'s blog`, []);
-    await fs.write(feedPath as FilePath, newFeed.toString());
-    await fs.publish();
-    return newFeed
+    return fs.write(feedPath as FilePath, newFeed.toString())
+      .then(() => {
+        fs.publish()
+        return newFeed
+      });
   }
 
   return (
