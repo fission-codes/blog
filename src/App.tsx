@@ -26,17 +26,27 @@ function App() {
       if (await fs.exists(feedPath)) {
         console.log("✅ feed file exists");
         const content = await fs.read(feedPath as FilePath);
-        setFeed(Feed.fromString(content as string || ''));
+        try {
+          setFeed(Feed.fromString(content as string));
+        } catch (err) {
+          console.log('err in here', err)
+          await createFeed(feedPath)
+        }
       } else {
         console.log("❌ need to create feed");
-        const newFeed = new Feed(`${username}'s blog`, []);
-        await fs.write(feedPath as FilePath, newFeed.toString());
-        await fs.publish();
+        await createFeed(feedPath)
       }
     }
 
     loadFeed();
   }, [fs, username]);
+
+  async function createFeed (feedPath) {
+    if (!fs) return
+    const newFeed = new Feed(`${username}'s blog`, []);
+    await fs.write(feedPath as FilePath, newFeed.toString());
+    await fs.publish();
+  }
 
   return (
     <Router>

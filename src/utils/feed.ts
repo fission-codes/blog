@@ -59,7 +59,15 @@ export class Feed {
       // TODO -- should use a real title
       return new Feed('test', [])
     }
-    const feed = JSON.parse(str);
+
+    var feed
+    try {
+      feed = JSON.parse(str);
+    } catch (err) {
+      console.log('err feed from string')
+      throw err
+    }
+
     return new Feed(feed.title, feed.items);
   };
 }
