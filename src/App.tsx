@@ -30,12 +30,12 @@ function App() {
           setFeed(Feed.fromString(content as string));
         } catch (err) {
           console.log('err in here', err)
-          var _feed = await createFeed(feedPath)
+          const _feed = await createFeed(feedPath)
           setFeed(_feed)
         }
       } else {
         console.log("❌ need to create feed");
-        var _feed = await createFeed(feedPath)
+        const _feed = await createFeed(feedPath)
         setFeed(_feed);
       }
     }
