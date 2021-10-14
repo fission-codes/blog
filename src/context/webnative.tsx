@@ -46,8 +46,6 @@ const WebnativeProvider: React.FC<Props> = ({
     getState();
   }, [permissions]);
 
-  console.log('state', state)
-
   if (!state) {
     return loading || <div>Loading...</div>;
   }

@@ -7,7 +7,7 @@ interface Props {
   component: React.FC<RouteComponentProps>;
   path: string;
   exact?: boolean;
-  feed: Feed | null | undefined;
+  feed: Feed | null;
 }
 
 const AuthRoute = ({ component: Component, ...rest }: Props) => {

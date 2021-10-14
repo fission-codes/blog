@@ -21,12 +21,8 @@ const Editor = ({ feed }) => {
   const _wn = useWebnative()
   const { fs } = _wn
 
-  console.log('wn', _wn)
-  console.log('fs', fs)
-  console.log('feed in editor', feed)
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log('**submit', data)
 
     if (!fs || !fs.appPath) return
 
