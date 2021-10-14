@@ -61,7 +61,7 @@ const Editor = ({ feed }) => {
             />
           </label>
 
-          <label>
+          <label className="block mt-6">
             Image
             <input type="file"
               className="form-input"
