@@ -26,7 +26,7 @@ interface Author {
 
 export class Feed {
   version = "https://jsonfeed.org/version/1.1";
-  title: string;
+  title?: string;
   home_page_url?: string;
   feed_url?: string;
   description?: string;
@@ -39,9 +39,19 @@ export class Feed {
   expired?: boolean;
   items: Item[] = [];
 
-  constructor(title: string, items: Item[]) {
-    this.title = title;
-    this.items = items;
+  // constructor (title: string, items: Item[]) {
+  //   this.title = title
+  //   this.items = items
+  // }
+
+
+  constructor(feed: Feed) {
+    console.log('feed', feed)
+    Object.keys(feed).forEach(k => {
+      // how to accept a serialized feed to create an instance?
+      this[k] = feed[k]
+    })
+    console.log('this', this)
   }
 
   public addItem = (item: Item) => {
@@ -60,6 +70,7 @@ export class Feed {
       throw err
     }
 
-    return new Feed(feed.title, feed.items);
+    return new Feed(feed);
+    // return new Feed(feed.title, feed.items);
   };
 }
