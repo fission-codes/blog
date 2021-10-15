@@ -1,4 +1,5 @@
-import { Feed, SerializedFeed } from './feed'
+import { isExportDeclaration } from 'typescript'
+import { Feed } from './feed'
 
 describe('feed constructor', () => {
   it('should create a new instance', () => {
@@ -9,6 +10,7 @@ describe('feed constructor', () => {
       items: []
     })
 
+    expect(feed instanceof Feed).toEqual(true)
     expect(feed).toBeTruthy()
     expect(feed.title).toEqual('aaa')
   })
