@@ -13,3 +13,15 @@ describe('feed constructor', () => {
     expect(feed.title).toEqual('aaa')
   })
 })
+
+describe('create a Feed from string', () => {
+  it('should take a JSON string', () => {
+    var serializedFeed = JSON.stringify({
+      title: 'foo',
+      items: [{ id: '1', title: 'title example' }]
+    })
+
+    var feed = Feed.fromString(serializedFeed)
+    expect(feed.items[0].title).toEqual('title example')
+  })
+})
