@@ -16,7 +16,7 @@
     "build": "vite build",
     "serve": "vite serve",
     "eject": "react-scripts eject",
-    "test": "jest src"
+    "test": "jest test"
   },
   "eslintConfig": {
     "extends": [

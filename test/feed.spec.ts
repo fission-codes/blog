@@ -1,4 +1,4 @@
-import { Feed } from './feed'
+import { Feed } from '../src/utils/feed'
 
 describe('feed constructor', () => {
   it('should create a new instance', () => {
