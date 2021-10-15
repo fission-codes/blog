@@ -57,7 +57,6 @@ export class Feed {
     try {
       feed = JSON.parse(str);
     } catch (err) {
-      console.log('err feed from string')
       throw err
     }
 
