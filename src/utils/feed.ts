@@ -63,13 +63,7 @@ export class Feed {
   };
 
   static fromString = (str: string): Feed => {
-    var feed
-    try {
-      feed = JSON.parse(str);
-    } catch (err) {
-      throw err
-    }
-
+    var feed = JSON.parse(str)
     return new Feed(feed);
     // return new Feed(feed.title, feed.items);
   };
