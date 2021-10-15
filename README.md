@@ -16,3 +16,9 @@ Development server:
 ```
 npm start
 ```
+
+Tests:
+
+```
+npm test
+```
