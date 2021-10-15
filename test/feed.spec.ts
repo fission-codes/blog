@@ -26,6 +26,20 @@ describe('Feed.fromString', () => {
   })
 })
 
+describe('feed.toString', () => {
+  it('should serialize the feed', () => {
+    var feed = new Feed({
+      version: '1',
+      title: 'example',
+      authors: [{ name: 'alice' }],
+      items: []
+    })
+
+    const str = feed.toString()
+    expect(str).toEqual(JSON.stringify(feed))
+  })
+})
+
 describe('feed.addItem ', () => {
   it('should add an item to the list', () => {
     var feed = new Feed({
