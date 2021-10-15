@@ -46,12 +46,14 @@ function App() {
 
   function createFeed (feedPath:FilePath) {
     if (!fs) return null
-    const newFeed = new Feed(`${username}'s blog`, []);
+    const newFeed = new Feed({
+      title: `${username}'s blog`,
+      authors: [{ name: username }],
+      items: []
+    });
     return fs.write(feedPath as FilePath, newFeed.toString())
-      .then(() => {
-        fs.publish()
-        return newFeed
-      });
+      .then(() => fs.publish())
+      .then(() => newFeed);
   }
 
   return (

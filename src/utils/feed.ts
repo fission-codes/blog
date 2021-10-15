@@ -24,8 +24,8 @@ interface Author {
   avatar?: string;
 }
 
-export interface SerializedFeed {
-  version: string;
+interface SerializedFeed {
+  version?: string;
   title?: string;
   home_page_url?: string;
   feed_url?: string;

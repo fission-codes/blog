@@ -1,4 +1,3 @@
-import { isExportDeclaration } from 'typescript'
 import { Feed } from './feed'
 
 describe('feed constructor', () => {
