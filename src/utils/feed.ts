@@ -24,6 +24,22 @@ interface Author {
   avatar?: string;
 }
 
+export interface SerializedFeed {
+  version: string;
+  title?: string;
+  home_page_url?: string;
+  feed_url?: string;
+  description?: string;
+  user_comment?: string;
+  next_url?: string;
+  icon?: string;
+  favicon?: string;
+  authors: Author[];
+  language?: string;
+  expired?: boolean;
+  items: Item[];
+}
+
 export class Feed {
   version = "https://jsonfeed.org/version/1.1";
   title?: string;
@@ -39,19 +55,8 @@ export class Feed {
   expired?: boolean;
   items: Item[] = [];
 
-  // constructor (title: string, items: Item[]) {
-  //   this.title = title
-  //   this.items = items
-  // }
-
-
-  constructor(feed: Feed) {
-    console.log('feed', feed)
-    Object.keys(feed).forEach(k => {
-      // how to accept a serialized feed to create an instance?
-      this[k] = feed[k]
-    })
-    console.log('this', this)
+  constructor(feed: SerializedFeed) {
+    Object.assign(this, feed)
   }
 
   public addItem = (item: Item) => {
@@ -65,6 +70,5 @@ export class Feed {
   static fromString = (str: string): Feed => {
     var feed = JSON.parse(str)
     return new Feed(feed);
-    // return new Feed(feed.title, feed.items);
   };
 }
