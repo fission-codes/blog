@@ -14,7 +14,7 @@ describe('feed constructor', () => {
   })
 })
 
-describe('create a Feed from string', () => {
+describe('Feed.fromString', () => {
   it('should take a JSON string', () => {
     var serializedFeed = JSON.stringify({
       title: 'foo',
