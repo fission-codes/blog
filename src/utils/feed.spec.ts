@@ -1,8 +1,15 @@
-import { Feed } from './feed'
+import { Feed, SerializedFeed } from './feed'
 
-describe('feed', () => {
+describe('feed constructor', () => {
   it('should create a new instance', () => {
-    var feed = new Feed('example feed', [])
+    var feed = new Feed({
+      version: '1',
+      title: 'aaa',
+      authors: [{ name: 'alice' }],
+      items: []
+    })
+
     expect(feed).toBeTruthy()
+    expect(feed.title).toEqual('aaa')
   })
 })
