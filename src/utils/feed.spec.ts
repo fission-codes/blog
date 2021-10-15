@@ -10,7 +10,6 @@ describe('feed constructor', () => {
     })
 
     expect(feed instanceof Feed).toEqual(true)
-    expect(feed).toBeTruthy()
     expect(feed.title).toEqual('aaa')
   })
 })
