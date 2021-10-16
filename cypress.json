@@ -1,1 +1,5 @@
-{}
+{
+    "chromeWebSecurity": false,
+    "//": "the loading screen takes a while",
+    "defaultCommandTimeout": 30000
+}

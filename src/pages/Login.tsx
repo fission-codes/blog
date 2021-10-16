@@ -8,6 +8,11 @@ const Login = () => {
   if (state?.authenticated) {
     return <Redirect to="/" />;
   }
+
+  //   wnContext.login() => wn.redirectToLobby()
+  //  `redirectToLobby` redirects you to auth.fission.codes,
+  //  our authentication lobby
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="px-6 flex flex-auto flex-col items-center justify-center py-12 text-center">
@@ -15,7 +20,7 @@ const Login = () => {
         <div className="max-w-xl mt-4 text-gray-300 dark:text-gray-400">
           A web native blogging engine.
         </div>
-        <button onClick={() => login()} className="btn">
+        <button onClick={() => login()} className="btn login">
           <div className="flex items-center pt-px">
             <span className="mr-2 opacity-30 text-white w-4">
               <svg height="100%" width="100%" viewBox="0 0 98 94">
