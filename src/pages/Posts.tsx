@@ -3,10 +3,15 @@ import Layout from "../components/Layout";
 import { Feed } from "../utils/feed";
 import React, { FunctionComponent } from 'react';
 
+import { RouteComponentProps } from "react-router-dom";
+
+
 type PostProps = {
   feed: Feed
 }
 
+// const Posts: FunctionComponent<PostProps & RouteComponentProps<any>> = ({ feed }) => {
+// const Posts: FunctionComponent<RouteComponentProps<PostProps>> = ({ feed }) => {
 const Posts: FunctionComponent<PostProps> = ({ feed }) => {
   return (
     <Layout>
