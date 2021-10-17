@@ -26,7 +26,6 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
   const _wn = useWebnative()
   const { fs } = _wn
 
-
   const onSubmit = handleSubmit(async (data) => {
 
     if (!fs || !fs.appPath) return
@@ -36,7 +35,6 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
       // could take the hash of the post (without id attribute), then
       //   add `id: <hash>`
       id: '1',
-      // TODO -- get a real name
       content_text: data.content,
       title: data.title
     })
