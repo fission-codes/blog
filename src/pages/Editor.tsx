@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { useForm } from "react-hook-form";
+import React, { BaseSyntheticEvent, FunctionComponent } from 'react';
+// import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { useWebnative } from "../context/webnative";
 import * as wn from "webnative";
@@ -17,17 +17,66 @@ type EditorProps = {
 }
 
 const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm<Inputs>();
 
   const _wn = useWebnative()
   const { fs } = _wn
 
-  const onSubmit = handleSubmit(async (data) => {
 
+
+  // ???
+  // Argument of type 'string' is not assignable to parameter of type 'Blob'.
+  // this typescript error is only when using the react-hook-form dependency,
+  // not with a standard event handler function
+
+  // const onSubmit = handleSubmit(async (data) => {
+  //   if (!fs || !fs.appPath) return
+
+  //   console.log('**on submit**', data)
+
+    // data.image is a `FileList` object
+    // const imageFile = data.image[0]
+    // console.log('**image', imageFile)
+
+    // why does this give a ts error?
+    // -----------------------------------------------------
+    // const reader = new FileReader()
+
+    // reader.onloadend = () => {
+    //   console.log('reader.result', reader.result)
+    // }
+
+    // ???
+    // Argument of type 'string' is not assignable to parameter of type 'Blob'.
+    // reader.readAsDataURL(imageFile)
+    // -----------------------------------------------------
+
+
+    // feed.addItem({
+    //   // TODO -- how to get id?
+    //   // could take the hash of the post (without id attribute), then
+    //   //   add `id: <hash>`
+    //   id: '1',
+    //   content_text: data.content,
+    //   title: data.title
+    // })
+
+    // const feedPath = fs.appPath(wn.path.file("feed.json"));
+    // fs.write(feedPath as FilePath, feed.toString())
+    //   // TODO -- should show resolving status while we publish
+    //   .then(() => fs.publish())
+  // });
+
+  interface FeedData {
+    title: string;
+    content: string;
+  }
+
+  function updateFeed (data: FeedData, img: string | ArrayBuffer | null) {
     if (!fs || !fs.appPath) return
 
     feed.addItem({
@@ -35,15 +84,48 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
       // could take the hash of the post (without id attribute), then
       //   add `id: <hash>`
       id: '1',
+
+      // this is kind of wonky because of typechecking
+      image: (img && img.toString() || undefined),
+
       content_text: data.content,
       title: data.title
     })
 
     const feedPath = fs.appPath(wn.path.file("feed.json"));
-    fs.write(feedPath as FilePath, feed.toString())
+    return fs.write(feedPath as FilePath, feed.toString())
       // TODO -- should show resolving status while we publish
       .then(() => fs.publish())
-  });
+  }
+
+
+  // -----------------------------------------------------------------------
+
+  const submitter = (ev: BaseSyntheticEvent) => {
+    ev.preventDefault()
+    console.log('ev.target.elements', ev.target.elements)
+    var image = ev.target.elements.image.files[0]
+    console.log('**image', image)
+
+    var data = ['title', 'content'].reduce((acc: any, k) => {
+      acc[k] = ev.target.elements[k].value
+      return acc
+    }, {})
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      console.log('load end')
+      console.log('reader.result', reader.result)
+      // onSubmit(ev)
+      updateFeed(data, reader.result)
+    }
+
+    // this gives us base64
+    reader.readAsDataURL(image)
+  }
+
+  // -----------------------------------------------------------------------
+
 
   return (
     <Layout>
@@ -51,13 +133,14 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
         <h1 className="text-xl flex-grow">New Post</h1>
       </header>
       <section className="w-full py-8">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={submitter}>
           <label className="block">
             Title
             <input
               type="text"
               className="form-input"
-              {...register("title", { required: true })}
+              required={true}
+              name={'title'}
             />
           </label>
 
@@ -65,7 +148,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
             Image
             <input type="file"
               className="form-input"
-              {...register('image')}
+              name={'image'}
             />
           </label>
 
@@ -74,7 +157,8 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
             <textarea
               rows={20}
               className="form-textarea"
-              {...register("content", { required: true })}
+              required={true}
+              name={'content'}
             ></textarea>
           </label>
           <div>

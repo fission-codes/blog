@@ -12,6 +12,8 @@ type PostProps = {
 // const Posts: FunctionComponent<PostProps & RouteComponentProps<any>> = ({ feed }) => {
 // const Posts: FunctionComponent<RouteComponentProps<PostProps>> = ({ feed }) => {
 const Posts: FunctionComponent<PostProps> = ({ feed }) => {
+  console.log('in posts', feed)
+
   return (
     <Layout>
       <header className="flex">
