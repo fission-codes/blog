@@ -83,3 +83,4 @@ const WebnativeProvider: React.FC<Props> = ({
 const useWebnative = () => React.useContext(WebnativeCtx) as WebnativeContext;
 
 export { WebnativeProvider, useWebnative };
+export type { WebnativeContext };

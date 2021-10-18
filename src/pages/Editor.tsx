@@ -82,8 +82,8 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     content: string;
   }
 
-  function updateFeed (data: FeedData, imgName: string) {
-  // function updateFeed (data: FeedData, img: ArrayBuffer) {
+  // function updateFeed (data: FeedData, imgName: string) {
+  function updateFeed (data: FeedData, img: string) {
     if (!fs || !fs.appPath) return
 
     // we could also take a blob/buffer for the image, and save the blob to
@@ -103,7 +103,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
       // how can we record just an address for the image?
       // the image should be already written to disk when this is called
-      image: imgName,
+      image: img,
 
       content_text: data.content,
       title: data.title
@@ -132,7 +132,6 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
   const submitter = (ev: BaseSyntheticEvent) => {
     if (!(fs && fs.appPath)) return
     ev.preventDefault()
-    console.log('ev.target.elements', ev.target.elements)
     const image:File = ev.target.elements.image.files[0]
     console.log('**image', image)
 
@@ -146,8 +145,8 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     // first save the image,
     // then update the feed and save the feed
     // (this is a two step process, not atomic)
-    fs.write(fs.appPath(wn.path.file(fileName)), image)
-      .then(() => updateFeed(data, fileName))
+    // fs.write(fs.appPath(wn.path.file(fileName)), image)
+    //   .then(() => updateFeed(data, fileName))
 
     // if we save a file to ipfs, what do we use as the URL in the
     // img tag source?
@@ -157,14 +156,14 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
 
 
-    // const reader = new FileReader()
-    // reader.onloadend = () => {
-    //   console.log('load end')
-    //   updateFeed(data, reader.result as string)
-    //   // onSubmit(ev)
-    //   // updateFeed(data, reader.result as ArrayBuffer)
-    // }
-    // reader.readAsDataURL(image)  // this gives us base64
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      console.log('load end')
+      updateFeed(data, reader.result as string)
+      // onSubmit(ev)
+      // updateFeed(data, reader.result as ArrayBuffer)
+    }
+    reader.readAsDataURL(image)  // this gives us base64
 
     // const url = URL.createObjectURL(image);
     // console.log('url', url)
