@@ -103,7 +103,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
       // how can we record just an address for the image?
       // the image should be already written to disk when this is called
-      image: (imgName),
+      image: imgName,
 
       content_text: data.content,
       title: data.title
@@ -143,6 +143,9 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
       return acc
     }, {})
 
+    // first save the image,
+    // then update the feed and save the feed
+    // (this is a two step process, not atomic)
     fs.write(fs.appPath(wn.path.file(fileName)), image)
       .then(() => updateFeed(data, fileName))
 

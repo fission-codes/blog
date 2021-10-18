@@ -3,7 +3,7 @@
  *
  * @see https://jsonfeed.org/version/1.1
  */
-interface Item {
+export interface Item {
   id: string;
   url?: string;
   external_url?: string;
