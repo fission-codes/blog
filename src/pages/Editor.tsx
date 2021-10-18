@@ -1,4 +1,8 @@
-import React, { BaseSyntheticEvent, FunctionComponent } from 'react';
+import React, {
+  BaseSyntheticEvent,
+  FunctionComponent,
+  useState
+} from 'react';
 // import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
 import { useWebnative } from "../context/webnative";
@@ -6,11 +10,11 @@ import * as wn from "webnative";
 import { FilePath } from "webnative/path";
 import { Feed } from "../utils/feed";
 
-type Inputs = {
-  title: string;
-  content: string;
-  image: string;
-};
+// type Inputs = {
+//   title: string;
+//   content: string;
+//   image: string;
+// };
 
 type EditorProps = {
   feed: Feed
@@ -25,6 +29,8 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
   const _wn = useWebnative()
   const { fs } = _wn
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
 
 
@@ -76,7 +82,8 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     content: string;
   }
 
-  function updateFeed (data: FeedData, img: string | ArrayBuffer | null) {
+  function updateFeed (data: FeedData, imgName: string) {
+  // function updateFeed (data: FeedData, img: ArrayBuffer) {
     if (!fs || !fs.appPath) return
 
     // we could also take a blob/buffer for the image, and save the blob to
@@ -94,8 +101,9 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
       //   add `id: <hash>`
       id: '1',
 
-      // this is kind of wonky because of typechecking
-      image: ((img && img.toString()) || undefined),
+      // how can we record just an address for the image?
+      // the image should be already written to disk when this is called
+      image: (imgName),
 
       content_text: data.content,
       title: data.title
@@ -110,27 +118,90 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
   // -----------------------------------------------------------------------
 
+  function getNameFromFile (file:File) {
+    const url = URL.createObjectURL(file);
+    // blob:http://localhost:3000/83507733-bfb8-42dd-ac10-638e2c28c776
+    var slug = url.split('/').pop()
+    var ext = file.name.split('.').pop()
+    var fileName = slug + '.' + ext
+    return fileName
+  }
+
+  // const content = await fs.cat(wn.path.file("public", "some", "file"))
+
   const submitter = (ev: BaseSyntheticEvent) => {
+    if (!(fs && fs.appPath)) return
     ev.preventDefault()
     console.log('ev.target.elements', ev.target.elements)
-    var image = ev.target.elements.image.files[0]
+    const image:File = ev.target.elements.image.files[0]
     console.log('**image', image)
 
-    var data = ['title', 'content'].reduce((acc: any, k) => {
+    var fileName = getNameFromFile(image)
+
+    const data = ['title', 'content'].reduce((acc: any, k) => {
       acc[k] = ev.target.elements[k].value
       return acc
     }, {})
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      console.log('load end')
-      console.log('reader.result', reader.result)
-      // onSubmit(ev)
-      updateFeed(data, reader.result)
-    }
+    fs.write(fs.appPath(wn.path.file(fileName)), image)
+      .then(() => updateFeed(data, fileName))
 
-    // this gives us base64
-    reader.readAsDataURL(image)
+    // if we save a file to ipfs, what do we use as the URL in the
+    // img tag source?
+
+    // need to take the filename in the message, read it from wn.fs,
+    // then do `createObjectURL` on the file object
+
+
+
+    // const reader = new FileReader()
+    // reader.onloadend = () => {
+    //   console.log('load end')
+    //   updateFeed(data, reader.result as string)
+    //   // onSubmit(ev)
+    //   // updateFeed(data, reader.result as ArrayBuffer)
+    // }
+    // reader.readAsDataURL(image)  // this gives us base64
+
+    // const url = URL.createObjectURL(image);
+    // console.log('url', url)
+
+    // like filereader, but more direct
+    // image.arrayBuffer()
+    //   .then(buf => {
+    //     console.log('*buf*', buf)
+    //     updateFeed(data, buf)
+    //   })
+  }
+
+  function changer (ev: BaseSyntheticEvent) {
+    if (!(fs && fs.appPath)) return
+    var image:File = ev.target.files[0]
+    console.log('*img*', image)
+    const url = URL.createObjectURL(image);
+    console.log('*url*', url)
+    setPreviewImage(url)
+
+    // var slug = url.split('/').pop()
+    // var ext = image.name.split('.').pop()
+
+    // var fileName = slug + '.' + ext
+
+    // fs.write(fs.appPath(wn.path.file(fileName)), image)
+
+    // console.log(
+    //   'path',
+    //   fs.appPath(),
+    //   slug,
+    //   ext,
+    //   'aaa'
+    // )
+
+    // image.arrayBuffer()
+    //   .then(buf => {
+    //     console.log('*buf*', buf)
+    //     // fs.write(fs.appPath(wn.path.file(fileName)), buf)
+    //   })
   }
 
   // -----------------------------------------------------------------------
@@ -153,9 +224,17 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
             />
           </label>
 
+          {previewImage ?
+            (<div className="preview-image">
+              <img src={previewImage} />
+            </div>) :
+            null
+          }
+
           <label className="block mt-6">
             Image
             <input type="file"
+              onChange={changer}
               className="form-input"
               name={'image'}
             />

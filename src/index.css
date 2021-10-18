@@ -28,3 +28,15 @@ input[type=file]::-webkit-file-upload-button {
 button:hover {
   cursor: pointer;
 }
+
+.preview-image {
+  margin: 1rem 0;
+  height: 4rem;
+  width: 4rem;
+}
+
+.preview-image img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
