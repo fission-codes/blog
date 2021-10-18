@@ -7,7 +7,7 @@ describe('the blog app', () => {
     cy.visit('http://localhost:3000/')
   })
 
-// interestingly, the identity used in the cypress tests persists between
+// interestingly identity used in the cypress tests persists between
 // runs of the tests. I would recommend manually clicking through the sign in
 // process the first time the tests run, with a fake email address
 

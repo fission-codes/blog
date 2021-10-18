@@ -28,15 +28,6 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
   function updateFeed (data: FeedData, img: string) {
     if (!fs || !fs.appPath) return
 
-    // we could also take a blob/buffer for the image, and save the blob to
-    // ipfs, then include just a link to the blob in the message item, then
-    // save the message
-    // doing it this way, where we embed a base64 URL into the message
-    // is not ideal because you need to download *all the images* that are
-    // in the feed. Whereas if a msg contains just a link, you would
-    // load a feed, and then choose which images to display by modifying the
-    // markup to include various <img> tags
-
     feed.addItem({
       // TODO -- how to get id?
       // could take the hash of the post (without id attribute), then
@@ -142,7 +133,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
             ></textarea>
           </label>
           <div>
-            <button className="btn publish-btn">Publish</button>
+            <button className="btn">Publish</button>
           </div>
         </form>
       </section>
