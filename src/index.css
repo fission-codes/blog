@@ -40,3 +40,14 @@ button:hover {
   height: 100%;
   width: 100%;
 }
+
+.img-cell {
+  height: 3rem;
+  width: 2rem;
+}
+
+.img-cell img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

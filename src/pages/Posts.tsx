@@ -34,6 +34,12 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
           </li>
           {feed?.items.map((item, i) => (
             <li key={i} className="table-row bg-white">
+              <div className="table-cell img-cell">
+                {item.image ?
+                  <img src={item.image} /> :
+                  null
+                }
+              </div>
               <div className="table-cell py-2 px-4">{item.title}</div>
               <div className="table-cell py-2 px-4">Draft</div>
               <div className="table-cell py-2 px-4">{item.date_published}</div>
