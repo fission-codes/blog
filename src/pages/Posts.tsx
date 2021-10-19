@@ -1,14 +1,46 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { useState, useEffect, FunctionComponent } from 'react';
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { Feed } from "../utils/feed";
+import { Feed, Item } from "../utils/feed";
+import { path } from 'webnative'
+import { useWebnative, WebnativeContext } from "../context/webnative";
+
 
 type PostProps = {
   feed: Feed
 }
 
+function getImageFromItem (wn: WebnativeContext, item: Item) {
+  const { fs } = wn
+  if (!fs || !fs.appPath) return
+  if (!item.image) return
+  var fileName = item.image
+  return fs.cat(fs.appPath(path.file(fileName)))
+    .then((content) => {
+      if (!content) return
+      // var url = URL.createObjectURL(new Blob([content]))
+      var url = URL.createObjectURL(new Blob([content], {type: "image/jpeg"}))
+      // var url = URL.createObjectURL(content)
+      return url
+    })
+}
+
 const Posts: FunctionComponent<PostProps> = ({ feed }) => {
-  console.log('in posts', feed)
+  const wn = useWebnative()
+  var [images, setImages] = useState([])
+
+  useEffect(() => {
+    // use promise.all
+    // get all the image URLs,
+    // then set state
+    if (!feed) return
+    Promise.all(feed.items.map(item => {
+      return getImageFromItem(wn, item)
+    }))
+      .then(imgs => {
+        setImages(imgs)
+      })
+  }, [feed])
 
   return (
     <Layout>
@@ -30,12 +62,10 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
           </li>
 
           {feed?.items.map((item, i) => {
-            console.log('*item*', item)
-
             return (<li key={i} className="table-row bg-white">
                 <div className="table-cell img-cell">
                   {item.image ?
-                    <img src={item.image} /> :
+                    <img src={images[i]} /> :
                     null
                   }
                 </div>
