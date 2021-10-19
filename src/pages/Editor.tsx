@@ -24,8 +24,12 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     content: string;
   }
 
-  // function updateFeed (data: FeedData, imgName: string) {
-  function updateFeed (data: FeedData, img: string) {
+
+  // img.src = URL.createObjectURL(this.files[i]);
+
+
+  function updateFeed (data: FeedData, imgName: string) {
+  // function updateFeed (data: FeedData, img: string) {
     if (!fs || !fs.appPath) return
 
     feed.addItem({
@@ -33,7 +37,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
       // could take the hash of the post (without id attribute), then
       //   add `id: <hash>`
       id: '1',
-      image: img,
+      image: imgName,
       content_text: data.content,
       title: data.title
     })
@@ -47,14 +51,13 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
 
   // -----------------------------------------------------------------------
 
-  // function getNameFromFile (file:File) {
-  //   const url = URL.createObjectURL(file);
-  //   // blob:http://localhost:3000/83507733-bfb8-42dd-ac10-638e2c28c776
-  //   var slug = url.split('/').pop()
-  //   var ext = file.name.split('.').pop()
-  //   var fileName = slug + '.' + ext
-  //   return fileName
-  // }
+  function getNameFromFile (file:File) {
+    const url = URL.createObjectURL(file);
+    // blob:http://localhost:3000/83507733-bfb8-42dd-ac10-638e2c28c776
+    var slug = url.split('/').pop()
+    var ext = file.name.split('.').pop()
+    return (slug + '.' + ext)
+  }
 
   const submitter = (ev: BaseSyntheticEvent) => {
     if (!(fs && fs.appPath)) return
@@ -62,20 +65,28 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     const image:File = ev.target.elements.image.files[0]
     console.log('**image', image)
 
-    // var fileName = getNameFromFile(image)
 
     const data = ['title', 'content'].reduce((acc: any, k) => {
       acc[k] = ev.target.elements[k].value
       return acc
     }, {})
 
+    const fileName = getNameFromFile(image)
+    const url = URL.createObjectURL(image);
+    console.log('*url*', url)
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      console.log('load end')
-      updateFeed(data, reader.result as string)
-    }
-    reader.readAsDataURL(image)  // this gives us base64
+    // first save the image,
+    // then update the feed and save the feed
+    // (this is a two step process, not atomic)
+    fs.write(fs.appPath(wn.path.file(fileName)), image)
+      .then(() => updateFeed(data, fileName))
+
+    // const reader = new FileReader()
+    // reader.onloadend = () => {
+    //   console.log('load end')
+    //   updateFeed(data, reader.result as string)
+    // }
+    // reader.readAsDataURL(image)  // this gives us base64
   }
 
   function changer (ev: BaseSyntheticEvent) {

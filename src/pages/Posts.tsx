@@ -30,6 +30,7 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
           </li>
 
           {feed?.items.map((item, i) => {
+            console.log('*item*', item)
 
             return (<li key={i} className="table-row bg-white">
                 <div className="table-cell img-cell">
