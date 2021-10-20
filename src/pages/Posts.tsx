@@ -5,7 +5,6 @@ import { Feed, Item } from "../utils/feed";
 import { path } from 'webnative'
 import { useWebnative, WebnativeContext } from "../context/webnative";
 
-
 type PostProps = {
   feed: Feed
 }
@@ -27,7 +26,7 @@ function getImageFromItem (wn: WebnativeContext, item: Item) {
 
 const Posts: FunctionComponent<PostProps> = ({ feed }) => {
   const wn = useWebnative()
-  var [images, setImages] = useState([])
+  var [images, setImages] = useState<(string | undefined)[]>([])
 
   useEffect(() => {
     // use promise.all
@@ -40,7 +39,7 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
       .then(imgs => {
         setImages(imgs)
       })
-  }, [feed])
+  }, [feed.items])
 
   return (
     <Layout>
