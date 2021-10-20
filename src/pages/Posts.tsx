@@ -18,7 +18,9 @@ function getImageFromItem (wn: WebnativeContext, item: Item) {
     .then((content) => {
       if (!content) return
       // var url = URL.createObjectURL(new Blob([content]))
-      var url = URL.createObjectURL(new Blob([content], {type: "image/jpeg"}))
+      var url = URL.createObjectURL(
+        new Blob([content as BlobPart], {type: "image/jpeg"})
+      )
       // var url = URL.createObjectURL(content)
       return url
     })
