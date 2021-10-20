@@ -24,12 +24,7 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     content: string;
   }
 
-
-  // img.src = URL.createObjectURL(this.files[i]);
-
-
   function updateFeed (data: FeedData, imgName: string) {
-  // function updateFeed (data: FeedData, img: string) {
     if (!fs || !fs.appPath) return
 
     feed.addItem({
@@ -80,17 +75,9 @@ const Editor: FunctionComponent<EditorProps> = ({ feed }) => {
     // (this is a two step process, not atomic)
     fs.write(fs.appPath(wn.path.file(fileName)), image)
       .then(() => updateFeed(data, fileName))
-
-    // const reader = new FileReader()
-    // reader.onloadend = () => {
-    //   console.log('load end')
-    //   updateFeed(data, reader.result as string)
-    // }
-    // reader.readAsDataURL(image)  // this gives us base64
   }
 
   function changer (ev: BaseSyntheticEvent) {
-    if (!(fs && fs.appPath)) return
     var image:File = ev.target.files[0]
     console.log('*img*', image)
     const url = URL.createObjectURL(image);
