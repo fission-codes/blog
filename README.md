@@ -48,3 +48,16 @@ Following the webnative instructions for file paths
 
 https://github.com/fission-suite/webnative#web-native-file-system
 
+
+## How do other people read my blog posts?
+
+It saves things to ipfs as is, how do you determine where, if anywhere, this is visible on the web?
+
+------------------------------------
+
+You have a public URL path of USERNAME.files.fission.name/p/PATH-TO-BLOG
+
+Sharing this path would be one thing to have in the editor -- maybe like "View published blog" or something?
+
+And, in the future, the blog editor might "publish" to an app, so it could also be nichothsblog.fission.app -- which you can of course add a custom domain to.
+
