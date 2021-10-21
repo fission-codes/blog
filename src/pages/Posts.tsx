@@ -41,7 +41,7 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
       .then(imgs => {
         setImages(imgs)
       })
-  }, [feed.items])
+  }, [(feed || {}).items])
 
   return (
     <Layout>
