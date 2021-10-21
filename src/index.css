@@ -44,6 +44,7 @@ button:hover {
 .img-cell {
   height: 3rem;
   width: 2rem;
+  vertical-align: middle;
 }
 
 .img-cell img {
