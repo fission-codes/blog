@@ -61,3 +61,6 @@ Sharing this path would be one thing to have in the editor -- maybe like "View p
 
 And, in the future, the blog editor might "publish" to an app, so it could also be nichothsblog.fission.app -- which you can of course add a custom domain to.
 
+-------------------------------------
+
+How to configure the domain name?
