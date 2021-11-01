@@ -1,45 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, FunctionComponent } from 'react';
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useWebnative } from "../context/webnative";
-import * as wn from "webnative";
-import { FilePath } from "webnative/path";
-import { Feed } from "../utils/feed";
+import { Feed, Item } from "../utils/feed";
+import { path } from 'webnative'
+import { useWebnative, WebnativeContext } from "../context/webnative";
 
-const Posts = () => {
-  const { fs, username } = useWebnative();
-  const [feed, setFeed] = useState<Feed | null>();
+type PostProps = {
+  feed: Feed
+}
 
-  // Load or initialize feed
+function getImageFromItem (wn: WebnativeContext, item: Item) {
+  const { fs } = wn
+  if (!fs || !fs.appPath) return
+  if (!item.image) return
+  var fileName = item.image
+  return fs.cat(fs.appPath(path.file(fileName)))
+    .then((content) => {
+      if (!content) return
+      // var url = URL.createObjectURL(new Blob([content]))
+      var url = URL.createObjectURL(
+        new Blob([content as BlobPart], {type: "image/jpeg"})
+      )
+      // var url = URL.createObjectURL(content)
+      return url
+    })
+}
+
+const Posts: FunctionComponent<PostProps> = ({ feed }) => {
+  const wn = useWebnative()
+  var [images, setImages] = useState<(string | undefined)[]>([])
+
   useEffect(() => {
-    async function loadFeed() {
-      if (!username || !fs || !fs.appPath) return;
-
-      const feedPath = fs.appPath(wn.path.file("feed.json"));
-      if (await fs.exists(feedPath)) {
-        console.log("✅ feed file exists");
-        const content = await fs.read(feedPath as FilePath);
-        setFeed(Feed.fromString(content as string));
-      } else {
-        console.log("❌ need to create feed");
-        const newFeed = new Feed(`${username}'s blog`);
-        await fs.write(feedPath as FilePath, newFeed.toString());
-        await fs.publish();
-      }
-    }
-
-    loadFeed();
-  }, [fs, username]);
+    // use promise.all
+    // get all the image URLs,
+    // then set state
+    if (!feed) return
+    Promise.all(feed.items.map(item => {
+      return getImageFromItem(wn, item)
+    }))
+      .then(imgs => {
+        setImages(imgs)
+      })
+  }, [(feed || {}).items])
 
   return (
     <Layout>
       <header className="flex">
         <h1 className="text-xl flex-grow">Posts</h1>
-        <Link to="/posts/new" className="justify-end">
+        <Link to="/posts/new" className="justify-end new">
           + New
         </Link>
       </header>
-      <section className="w-full py-8 table">
+
+      <section className="w-full py-8 table post-list">
         <ol className="table-row-group m-2">
           <li className="table-row bg-base-25">
             <div className="table-cell py-2 px-4 uppercase text-xs">Title</div>
@@ -48,13 +61,21 @@ const Posts = () => {
               Last Update
             </div>
           </li>
-          {feed?.items.map((item) => (
-            <li className="table-row bg-white">
-              <div className="table-cell py-2 px-4">{item.title}</div>
-              <div className="table-cell py-2 px-4">Draft</div>
-              <div className="table-cell py-2 px-4">{item.date_published}</div>
-            </li>
-          ))}
+
+          {feed?.items.map((item, i) => {
+            return (<li key={i} className="table-row bg-white">
+                <div className="table-cell img-cell">
+                  {item.image ?
+                    <img src={images[i]} /> :
+                    null
+                  }
+                </div>
+                <div className="table-cell py-2 px-4">{item.title}</div>
+                <div className="table-cell py-2 px-4">Draft</div>
+                <div className="table-cell py-2 px-4">{item.date_published}</div>
+              </li>)
+            })
+          }
         </ol>
       </section>
     </Layout>

@@ -3,7 +3,7 @@
  *
  * @see https://jsonfeed.org/version/1.1
  */
-interface Item {
+export interface Item {
   id: string;
   url?: string;
   external_url?: string;
@@ -15,8 +15,6 @@ interface Item {
   banner_image?: string;
   date_published?: string;
   date_modified?: string;
-  authors: Author[];
-  tags: string[];
   language?: string;
 }
 
@@ -26,9 +24,25 @@ interface Author {
   avatar?: string;
 }
 
+interface SerializedFeed {
+  version?: string;
+  title?: string;
+  home_page_url?: string;
+  feed_url?: string;
+  description?: string;
+  user_comment?: string;
+  next_url?: string;
+  icon?: string;
+  favicon?: string;
+  authors: Author[];
+  language?: string;
+  expired?: boolean;
+  items: Item[];
+}
+
 export class Feed {
   version = "https://jsonfeed.org/version/1.1";
-  title: string;
+  title?: string;
   home_page_url?: string;
   feed_url?: string;
   description?: string;
@@ -41,8 +55,8 @@ export class Feed {
   expired?: boolean;
   items: Item[] = [];
 
-  constructor(title: string) {
-    this.title = title;
+  constructor(feed: SerializedFeed) {
+    Object.assign(this, feed)
   }
 
   public addItem = (item: Item) => {
@@ -54,7 +68,7 @@ export class Feed {
   };
 
   static fromString = (str: string): Feed => {
-    const feed = JSON.parse(str);
+    var feed = JSON.parse(str)
     return new Feed(feed);
   };
 }

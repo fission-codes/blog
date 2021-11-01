@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "types": ["jest"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": false,
@@ -15,5 +16,6 @@
     "noEmit": true,
     "jsx": "react"
   },
+
   "include": ["./src"]
 }

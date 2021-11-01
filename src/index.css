@@ -8,9 +8,47 @@
 
 .btn:hover {
   @apply bg-base-600 text-white;
+  cursor: pointer;
 }
 
 .form-input,
 .form-textarea {
   @apply block mt-1 px-3 py-2 rounded w-full h-auto;
+}
+
+input[type="file"] {
+  cursor: pointer;
+  width: initial;
+}
+
+input[type=file]::-webkit-file-upload-button {
+  cursor: pointer; 
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.preview-image {
+  margin: 1rem 0;
+  height: 4rem;
+  width: 4rem;
+}
+
+.preview-image img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.img-cell {
+  height: 3rem;
+  width: 2rem;
+  vertical-align: middle;
+}
+
+.img-cell img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
