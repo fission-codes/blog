@@ -9,7 +9,7 @@
     "react-router-dom": "^5.2.0",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
-    "webnative": "^0.28.1"
+    "webnative": "^0.29.3"
   },
   "scripts": {
     "start": "vite",
