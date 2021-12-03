@@ -1,12 +1,12 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import { useWebnative } from "../context/webnative";
+import React from "react"
+import { Redirect } from "react-router-dom"
+import { useWebnative } from "../context/webnative"
 
 const Login = () => {
-  const { state, login } = useWebnative();
+  const { state, login } = useWebnative()
 
   if (state?.authenticated) {
-    return <Redirect to="/" />;
+    return <Redirect to="/" />
   }
 
   //   wnContext.login() => wn.redirectToLobby()
@@ -36,7 +36,7 @@ const Login = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

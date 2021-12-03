@@ -21,8 +21,8 @@ input[type="file"] {
   width: initial;
 }
 
-input[type=file]::-webkit-file-upload-button {
-  cursor: pointer; 
+input[type="file"]::-webkit-file-upload-button {
+  cursor: pointer;
 }
 
 button:hover {

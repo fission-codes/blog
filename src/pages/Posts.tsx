@@ -1,9 +1,9 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
-import { Link } from "react-router-dom";
-import Layout from "../components/Layout";
-import { Feed, Item } from "../utils/feed";
-import { path } from 'webnative'
-import { useWebnative, WebnativeContext } from "../context/webnative";
+import React, { useState, useEffect, FunctionComponent } from "react"
+import { Link } from "react-router-dom"
+import Layout from "../components/Layout"
+import { Feed, Item } from "../utils/feed"
+import { path } from "webnative"
+import { useWebnative, WebnativeContext } from "../context/webnative"
 
 type PostProps = {
   feed: Feed
@@ -13,12 +13,12 @@ function getImageFromItem (wn: WebnativeContext, item: Item) {
   const { fs } = wn
   if (!fs || !fs.appPath) return
   if (!item.image) return
-  var fileName = item.image
+  const fileName = item.image
   return fs.cat(fs.appPath(path.file(fileName)))
     .then((content) => {
       if (!content) return
       // var url = URL.createObjectURL(new Blob([content]))
-      var url = URL.createObjectURL(
+      const url = URL.createObjectURL(
         new Blob([content as BlobPart], {type: "image/jpeg"})
       )
       // var url = URL.createObjectURL(content)
@@ -28,7 +28,7 @@ function getImageFromItem (wn: WebnativeContext, item: Item) {
 
 const Posts: FunctionComponent<PostProps> = ({ feed }) => {
   const wn = useWebnative()
-  var [images, setImages] = useState<(string | undefined)[]>([])
+  const [images, setImages] = useState<(string | undefined)[]>([])
 
   useEffect(() => {
     // use promise.all
@@ -64,22 +64,22 @@ const Posts: FunctionComponent<PostProps> = ({ feed }) => {
 
           {feed?.items.map((item, i) => {
             return (<li key={i} className="table-row bg-white">
-                <div className="table-cell img-cell">
-                  {item.image ?
-                    <img src={images[i]} /> :
-                    null
-                  }
-                </div>
-                <div className="table-cell py-2 px-4">{item.title}</div>
-                <div className="table-cell py-2 px-4">Draft</div>
-                <div className="table-cell py-2 px-4">{item.date_published}</div>
-              </li>)
-            })
+              <div className="table-cell img-cell">
+                {item.image ?
+                  <img src={images[i]} /> :
+                  null
+                }
+              </div>
+              <div className="table-cell py-2 px-4">{item.title}</div>
+              <div className="table-cell py-2 px-4">Draft</div>
+              <div className="table-cell py-2 px-4">{item.date_published}</div>
+            </li>)
+          })
           }
         </ol>
       </section>
     </Layout>
-  );
-};
+  )
+}
 
-export default Posts;
+export default Posts

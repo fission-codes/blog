@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useWebnative } from "../context/webnative";
+import React from "react"
+import { Link } from "react-router-dom"
+import { useWebnative } from "../context/webnative"
 
 const Navigation = () => {
-  const { logout } = useWebnative();
+  const { logout } = useWebnative()
   return (
     <nav className="min-h-full flex flex-col">
       <div className="flex-none">
@@ -20,7 +20,7 @@ const Navigation = () => {
         <button onClick={() => logout()}>Logout</button>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

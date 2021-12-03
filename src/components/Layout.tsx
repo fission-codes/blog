@@ -1,8 +1,8 @@
-import React from "react";
-import Navigation from "./Navigation";
+import React, { ReactChild } from "react"
+import Navigation from "./Navigation"
 
 interface Props {
-  children?: any;
+  children?: ReactChild[]
 }
 
 const Layout = ({ children }: Props) => {
@@ -13,7 +13,7 @@ const Layout = ({ children }: Props) => {
       </div>
       <main className="w-5/6 p-4 bg-base-100">{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

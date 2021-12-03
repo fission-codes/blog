@@ -1,17 +1,13 @@
 module.exports = {
   verbose: true,
   globals: {
-    'ts-jest': {
-      tsConfig: 'tsconfig.jest.json'
-    }
+    "ts-jest": {
+      tsconfig: "tsconfig.jest.json",
+    },
   },
-  moduleFileExtensions: [
-    'js',
-    'ts',
-    'json'
-  ],
+  moduleFileExtensions: ["js", "ts", "json"],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
-    '^.+\\.js$': 'babel-jest'
-  }
+    "^.+\\.ts$": "ts-jest",
+    "^.+\\.js$": "babel-jest",
+  },
 };
